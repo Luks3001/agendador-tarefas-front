@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PasswordField } from '../../shared/components/password-field/password-field';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -18,8 +17,7 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatSelectModule,
     PasswordField,
-    ReactiveFormsModule,
-    CommonModule
+    ReactiveFormsModule
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
@@ -38,6 +36,19 @@ export class Register {
 
   get passwordControl(): FormControl {
     return this.form.get('password') as FormControl;
+  }
+
+  get fullNameErrors(): string | null {
+    const fullNameControl = this.form.get('fullName');
+    if (fullNameControl?.hasError('required')) return 'O nome completo é um campo obrigatório';
+    if (fullNameControl?.hasError('minlength')) return 'Cadastre um nome com mais de 3 letras';
+    return null
+  }
+  get emailErrors(): string | null {
+    const emailControl = this.form.get('email');
+    if (emailControl?.hasError('required')) return 'O cadastro do e-mail é obrigatório'
+    if (emailControl?.hasError('email')) return 'Este e-mail é inválido';
+    return null
   }
 
 
