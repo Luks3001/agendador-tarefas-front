@@ -9,5 +9,5 @@
     <a matButton=>Contatos</a>
     <span class="spacer"></span>
     <button matButton>Entrar</button>
-    <button matButton="filled" routerLink="/register">Cadastrar-se</button>
+    <button matButton ="filled" [disabled]="estaNaRotaRegister()" routerLink="/register">Cadastrar-se</button>
 </mat-toolbar>
