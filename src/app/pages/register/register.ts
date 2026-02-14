@@ -6,6 +6,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PasswordField } from '../../shared/components/password-field/password-field';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -17,7 +21,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
     MatInputModule,
     MatSelectModule,
     PasswordField,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
@@ -25,21 +30,27 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 })
 export class Register {
   form: FormGroup;
+  isLoading = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private router: Router
+
+  ) {
     this.form = this.formBuilder.group({
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['',[Validators.required,Validators.minLength(6)]]
+      senha: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   get passwordControl(): FormControl {
-    return this.form.get('password') as FormControl;
+    return this.form.get('senha') as FormControl;
   }
 
   get fullNameErrors(): string | null {
-    const fullNameControl = this.form.get('fullName');
+    const fullNameControl = this.form.get('nome');
     if (fullNameControl?.hasError('required')) return 'O nome completo é um campo obrigatório';
     if (fullNameControl?.hasError('minlength')) return 'Cadastre um nome com mais de 3 letras';
     return null
@@ -59,6 +70,23 @@ export class Register {
       return
 
     }
-    console.log("Formulário submetido", this.form.value)
+
+    const formData = this.form.value;
+
+    this.isLoading = true;
+
+    this.userService.register(formData)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }))
+      .subscribe({
+        next: (response) => {
+          this.router.navigate(['/login'])
+        },
+        error: (error) => {
+          console.error(`Erro ao registrar usuário`, error);
+        }
+      })
   }
 }
