@@ -17,8 +17,8 @@ export class PasswordField {
 
   get passwordErrors(): string | null {
     const passwordControl = this.control;
-    if (passwordControl?.hasError('required')) return 'O campo senha é obrigatório';
-    if (passwordControl?.hasError('minlength')) return 'Cadastre uma senha com no mínimo 6 dígitos';
+    if (passwordControl?.hasError('required')) return 'Senha é um campo obrigatório';
+    if (passwordControl?.hasError('minlength')) return 'A senha deve conter no mínimo 6 dígitos';
     return null
   }
 
