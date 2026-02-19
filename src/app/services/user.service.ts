@@ -38,6 +38,11 @@ interface UserRegisterResponse {
     ddd: string
   }] | null;
 }
+export interface UserLoginPayload {
+
+  email: string,
+  senha: string
+}
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +54,8 @@ export class UserService {
 
   register(body: UserRegisterPayload): Observable<UserRegisterResponse> {
     return this.http.post<UserRegisterResponse>(`${this.apiUrl}/usuario`, body)
+  }
+  login(body: UserLoginPayload): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/usuario/login`, body, { responseType: 'text' as "json" })
   }
 }
