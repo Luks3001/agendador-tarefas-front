@@ -240,7 +240,7 @@
 				<path style="fill:none;stroke:#FFFFFF;stroke-width:0.7031;stroke-miterlimit:10;" d="M143.572,381.53
 					c-3.546,0.338-7.214-0.926-9.8-3.375c-2.586-2.45-4.046-6.044-3.901-9.603"/>
 			</g>
-			<rect x="27.273" y="401.355" style="fill:#FFFFFF;" width="438.189" height="80.577"/>
+			<rect x="27.273" y="401.355" style="fill:none;" width="438.189" height="80.577"/>
 			<path style="fill:#FDBED1;" d="M162.002,401.355c0,10.478,63.061,18.972,140.85,18.972c77.789,0,140.849-8.494,140.849-18.972
 				H162.002z"/>
 			<g>
