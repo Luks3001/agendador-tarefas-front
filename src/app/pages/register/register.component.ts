@@ -45,6 +45,13 @@ export class RegisterComponent {
     });
   }
 
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks'])
+    }
+  }
+
+
   get passwordControl(): FormControl {
     return this.form.get('senha') as FormControl;
   }
