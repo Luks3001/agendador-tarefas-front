@@ -21,7 +21,10 @@ export class TopMenuComponent implements OnInit, OnDestroy {
   inscricaoRota!: Subscription;
 
   private routerService = inject(RouterStateService);
- 
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private route = inject(Router);
+
   ngOnInit(): void {
     this.inscricaoRota = this.routerService.rotaAtual$.subscribe(url => {
       this.rotaAtual = url;
@@ -38,5 +41,27 @@ export class TopMenuComponent implements OnInit, OnDestroy {
 
   estaNaRotaLogin(): boolean {
     return this.rotaAtual === '/login'
+  }
+
+  get estaLogado(): boolean {
+    return this.authService.isLoggedIn()
+  }
+
+  pegarInicialUsuario(): string {
+
+    const user = this.userService.getUser();
+
+    if (user && user.nome) {
+      return user.nome.charAt(0).toUpperCase();
+    }
+    return '?'
+  }
+
+
+
+  logout(): void {
+    this.authService.logout();
+    this.route.navigate(['/login'])
+
   }
 }
