@@ -195,6 +195,33 @@ export class UserDataComponent {
     });
 
   }
+  deletarEndereco(id: number | undefined) {
+    if (!id) return;
+
+    const token = this.authService.getToken();
+    if (!token) return;
+
+    if (confirm('Deseja realmente excluir este endereço?')) {
+      this.userService.deleteEndereco(id, token).subscribe({
+        next: () => console.log('Endereço removido!'),
+        error: (err) => console.error('Erro ao deletar endereço', err)
+      });
+    }
+  }
+
+  deletarTelefone(id: number | undefined) {
+    if (!id) return;
+
+    const token = this.authService.getToken();
+    if (!token) return;
+
+    if (confirm('Deseja realmente excluir este telefone?')) {
+      this.userService.deleteTelefone(id, token).subscribe({
+        next: () => console.log('Telefone removido!'),
+        error: (err) => console.error('Erro ao deletar telefone', err)
+      });
+    }
+  }
 
 }
 

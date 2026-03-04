@@ -51,7 +51,6 @@ export class RegisterComponent {
     }
   }
 
-
   get passwordControl(): FormControl {
     return this.form.get('senha') as FormControl;
   }
@@ -71,7 +70,6 @@ export class RegisterComponent {
   }
 
   submit() {
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
