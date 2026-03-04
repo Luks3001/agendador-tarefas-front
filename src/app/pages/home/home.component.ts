@@ -12,11 +12,6 @@ export class HomeComponent {
 
   imgHero = 'assets/imagem-hero.svg'
 
-  // constructor (
-  //   private authService: AuthService,
-  //   private router: Router
-  // ) { }
-
   private authService = inject(AuthService)
   private router = inject(Router)
 

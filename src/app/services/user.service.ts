@@ -4,7 +4,6 @@ import { Observable, switchMap, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from './auth.service';
 
-
 interface UserRegisterPayload {
   nome: string,
   email: string,
@@ -90,9 +89,9 @@ export class UserService {
 
   getEnderecoByCep(cep: string): Observable<any> {
     const token = localStorage.getItem('auth_token');
-    const headers = new HttpHeaders({ 
-    Authorization: token ? token : '' 
-  });
+    const headers = new HttpHeaders({
+      Authorization: token ? token : ''
+    });
     return this.http.get<any>(`${this.apiUrl}/usuario/endereco/${cep}`, { headers });
   }
 
@@ -113,6 +112,7 @@ export class UserService {
       })
     )
   }
+
   updateEndereco(id: number, body: {
     rua: string,
     numero: number,
@@ -130,6 +130,7 @@ export class UserService {
       })
     )
   }
+
   saveTelefone(body: { numero: string, ddd: string }, token: string): Observable<any> {
     const headers = new HttpHeaders({ Authorization: `${token}` })
     return this.http.post<UserResponse>(`${this.apiUrl}/usuario/telefone`, body, { headers }).pipe(
@@ -140,6 +141,7 @@ export class UserService {
       })
     )
   }
+
   updateTelefone(id: number, body:
     {
       numero: string,
@@ -161,5 +163,27 @@ export class UserService {
   setUser(data: UserResponse | null): void {
     this._user.set(data)
 
+  }
+
+  deleteEndereco(id: number, token: string): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: `${token}` });
+    return this.http.delete<any>(`${this.apiUrl}/usuario/endereco?id=${id}`, { headers }).pipe(
+      switchMap(() => this.getUserByEmail(token)), // Busca o usuário atualizado após deletar
+      tap(user => {
+        this.setUser(user);
+        this.authService.saveUser(user);
+      })
+    );
+  }
+
+  deleteTelefone(id: number, token: string): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: `${token}` });
+    return this.http.delete<any>(`${this.apiUrl}/usuario/telefone?id=${id}`, { headers }).pipe(
+      switchMap(() => this.getUserByEmail(token)),
+      tap(user => {
+        this.setUser(user);
+        this.authService.saveUser(user);
+      })
+    );
   }
 }
