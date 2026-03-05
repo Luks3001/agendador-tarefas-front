@@ -76,18 +76,21 @@ export class LoginComponent {
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (response) => {
-          this.authService.saveToken(response)
-          this.userService.getUserByEmail(response).subscribe(
-            {
-              next: (user) => {
-                this.authService.saveUser(user)
-              }
-            })
-          this.router.navigate(['/tasks'])
+          this.authService.saveToken(response);
+          this.userService.getUserByEmail(response).subscribe({
+            next: (user) => {
+              this.authService.saveUser(user);
+              this.userService.setUser(user);
+              this.router.navigate(['/tasks']);
+            },
+            error: (err) => {
+              console.error('Erro ao buscar dados do usuário após login', err);
+            }
+          });
         },
         error: (error) => {
-          console.error(`Erro ao entrar`, error)
+          console.error('Erro ao entrar', error);
         }
-      })
+      });
   }
 }

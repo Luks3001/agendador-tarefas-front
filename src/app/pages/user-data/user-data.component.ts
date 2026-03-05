@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
@@ -37,9 +37,21 @@ export class UserDataComponent {
   user = this.userService.user;
 
   form = this.formBuilder.group({
-    nome: [{ value: this.user()?.nome || '', disabled: true }],
-    email: [{ value: this.user()?.email || '', disabled: true }],
+    nome: [{ value: '', disabled: true }], // Deixe vazio inicialmente
+    email: [{ value: '', disabled: true }], // Deixe vazio inicialmente
   });
+
+  constructor() {
+    effect(() => {
+      const currentUser = this.user();
+      if (currentUser) {
+        this.form.patchValue({
+          nome: currentUser.nome,
+          email: currentUser.email
+        });
+      }
+    });
+  }
 
   cadastrarEndereco() {
     const token = this.authService.getToken()

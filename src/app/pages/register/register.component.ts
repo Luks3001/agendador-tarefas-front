@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,8 @@ import { AuthService } from '../../services/auth.service';
     MatSelectModule,
     PasswordFieldComponent,
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -36,7 +38,8 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
@@ -82,6 +85,11 @@ export class RegisterComponent {
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe({
         next: (response) => {
+          this.snackBar.open('Usuário cadastrado com sucesso! 🎉', 'Fechar', {
+            duration: 3000, 
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            });
           this.router.navigate(['/login']);
         },
         error: (error) => {
