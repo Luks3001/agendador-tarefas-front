@@ -99,7 +99,7 @@ export class TasksComponent {
     ]
 
     const dialogRef = this.dialog.open(ModalDialogComponent, {
-      data: { title: 'Adicionar Tarefa', formConfig },
+      data: { title: 'Editar Tarefa', formConfig },
     });
 
     dialogRef.afterClosed().subscribe(result => {
